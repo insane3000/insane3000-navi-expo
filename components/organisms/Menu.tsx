@@ -9,7 +9,14 @@ import PasswordIcon from "../../icons/PasswordIcon.svg";
 import AlertIcon from "../../icons/AlertIcon.svg";
 import FbIcon from "../../icons/FbIcon.svg";
 import CloseIcon from "../../icons/CloseIcon.svg";
-
+import Spinner from "../atoms/Spinner";
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+  Easing,
+  Keyframe,
+} from "react-native-reanimated";
 const MenuSt = styled.View`
   flex: 1;
   position: absolute;
@@ -22,7 +29,7 @@ const BgGradientSt = styled.TouchableOpacity`
   height: 100%;
   background: #00000070;
 `;
-const ScrollViewSt = styled.View`
+const ScrollViewSt = styled(Animated.View)`
   width: 80%;
   height: 100%;
   background: #070707;
@@ -43,8 +50,7 @@ const WifiTitleSt = styled.Text`
   /* margin-left: 10px; */
   font-size: 30px;
   width: 80%;
-  font-weight:300;
-
+  font-weight: 300;
 `;
 
 const ContainerInput = styled.View`
@@ -91,6 +97,17 @@ const CloseIconSt = styled.TouchableOpacity`
 interface props {
   setMenu: any;
 }
+const enteringAnimation = new Keyframe({
+  0: {
+    transform: [{ translateX: -300 }],
+    //   easing: EASING_BEZIER,
+  },
+
+  100: {
+    transform: [{ translateX: 0 }],
+    //   easing: EASING_BEZIER,
+  },
+});
 export default function Menu(props: props) {
   const [state, setState] = useState({
     network: "",
@@ -107,13 +124,15 @@ export default function Menu(props: props) {
         console.error(error);
       });
   };
+
   useEffect(() => {
     fetchData(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <MenuSt style={{ marginTop: Constants.statusBarHeight }}>
       <BgGradientSt onPress={() => props.setMenu(false)} />
-      <ScrollViewSt>
+      {/* <Animated.View entering={enteringAnimation}> */}
+      <ScrollViewSt entering={enteringAnimation.duration(100)}>
         <LogoSt source={logoNavi} />
         <WifiTitleSt>Wi - Fi</WifiTitleSt>
         <ContainerInput>
@@ -143,7 +162,9 @@ export default function Menu(props: props) {
         <CloseIconSt onPress={() => props.setMenu(false)}>
           <CloseIcon width={25} height={25} color={"black"} />
         </CloseIconSt>
+        {state.network === "" && <Spinner />}
       </ScrollViewSt>
+      {/* </Animated.View> */}
     </MenuSt>
   );
 }

@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, View, Linking } from "react-native";
+import { StyleSheet, Text, View, Linking, Button, ActivityIndicator } from "react-native";
 import styled from "styled-components/native";
 import MenuIcon from "./icons/MenuIcon.svg";
 import pet from "./img/pet.webp";
@@ -16,6 +16,7 @@ import fortnite from "./img/promos/fortnite.jpg";
 import angel from "./img/promos/angel.jpg";
 import pubg from "./img/promos/pubg.jpg";
 import { useFonts } from "expo-font";
+
 const AppSt = styled.SafeAreaView`
   flex: 1;
   background-color: #e4e4e4;
@@ -178,12 +179,10 @@ const LinkToNaviSt = styled.Text`
   margin-left: 5%;
   border-radius: 5px;
 `;
+
 export default function App() {
   const [menu, setMenu] = useState(false);
-  const [origin, setOrigin] = useState({
-    latitude: -17.39445754661466,
-    longitude: -66.15148105783902,
-  });
+
   const imgMobile = [imgMobile1, imgMobile2, imgMobile3];
   let [fontsLoaded] = useFonts({
     "LuckiestGuy-Regular": require("./assets/fonts/LuckiestGuy-Regular.ttf"),
@@ -309,23 +308,7 @@ export default function App() {
         <LinkToNaviSt onPress={() => Linking.openURL("https://goo.gl/maps/rU4G6pCjHnX63opV9")}>
           Google Maps
         </LinkToNaviSt>
-        {/* <View style={{ width: `100%`, height: 500 }}>
-          <MapView
-            initialRegion={{
-              latitude: origin.latitude,
-              longitude: origin.longitude,
-              latitudeDelta: 0.05,
-              longitudeDelta: 0.05,
-            }}
-            style={{ width: `100%`, height: `100%` }}
-          >
-            <Marker
-              coordinate={origin}
-              title="Navi Games Cbba"
-              //       description="Un lugar tranquilo para jugar..."
-            />
-          </MapView>
-        </View> */}
+  
       </ScrollViewSt>
 
       <MenuIConSt style={[styles.marginStatusBar, styles.shadowProp]} onPress={() => setMenu(true)}>
@@ -336,8 +319,6 @@ export default function App() {
     </AppSt>
   );
 }
-// import StyleSheet from react-native
-// import StyleSheet from react-native
 const styles = StyleSheet.create({
   marginStatusBar: {
     marginTop: Constants.statusBarHeight,
@@ -351,4 +332,5 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
   },
+
 });
